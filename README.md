@@ -88,22 +88,25 @@ python mcmc_analysis/runners/run_mcmc.py
 4. Push към branch (`git push origin feature/AmazingFeature`)
 5. Отворете Pull Request
 
-## Лиценз
-
-Този проект е с отворен код. Вижте LICENSE файла за подробности.
-
 ## Контакти
 
-За въпроси и предложения: [email]
+За въпроси и предложения относно проекта, моля свържете се с автора.
 
-## Цитиране
+---
 
-Ако използвате този код в научна работа, моля цитирайте:
+**Версия**: 1.0.0  
+**Дата**: 2024-2025  
+**Статус**: Завършен 
+
+
+## License
+
+This project is licensed under the Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License.
+
+You may use, modify, and share this work non-commercially, as long as you provide attribution and apply the same license to derivative works.
+
+© [Milen Krumov], [2025]
+
+For commercial licensing requests, contact [krumov.milen@gmail.com].
 
 ```
-@misc{nonlinear_time_cosmology,
-  title={Nonlinear Time Cosmology: A Model with Phase Transitions Without Dark Energy},
-  author={[Authors]},
-  year={2025},
-  url={[repository-url]}
-}
