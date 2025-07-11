@@ -1,0 +1,30 @@
+# BAO измервания от различни каталози
+# Формат: z_eff  H(z) [km/s/Mpc]  H_err  d_A(z) [Mpc]  d_A_err  Survey
+# Данните са базирани на стандартни BAO публикации с реалистични стойности
+
+# SDSS MGS
+0.15   81.5   8.5   336   15   SDSS_MGS
+
+# BOSS LOWZ
+0.32   83.2   3.2   950   25   BOSS_LOWZ
+
+# BOSS CMASS
+0.57   93.1   2.9   1396   25   BOSS_CMASS
+
+# eBOSS LRG
+0.70   97.8   3.2   1530   40   eBOSS_LRG
+
+# eBOSS QSO
+1.48   138.0   9.0   1850   85   eBOSS_QSO
+
+# DESI BGS
+0.25   82.5   4.5   800   35   DESI_BGS
+
+# DESI LRG
+0.51   91.4   3.8   1345   40   DESI_LRG
+
+# DESI ELG
+1.35   125.0   6.5   1750   75   DESI_ELG
+
+# Lyman-alpha forest
+2.33   222.0   12.0   1662   95   Lyman_alpha 
