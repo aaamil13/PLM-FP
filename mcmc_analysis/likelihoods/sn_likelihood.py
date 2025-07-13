@@ -73,7 +73,7 @@ class SupernovaeLikelihood:
             # Хвърляме грешка, за да спрем изпълнението, ако данните липсват
             raise
 
-    def log_likelihood(self, model):
+    def log_likelihood(self, model, delta_M=0.0, z_local=0.0):
         """
         Изчислява логаритъма на likelihood функцията (пропорционален на -0.5 * χ²).
         
@@ -82,6 +82,12 @@ class SupernovaeLikelihood:
         model : object
             Инстанция на космологичен модел (напр. PLM или LCDM),
             която има метод `distance_modulus(z)`.
+        delta_M : float, optional
+            Параметър за отместване на абсолютната светимост. 
+            По подразбиране е 0.0.
+        z_local : float, optional
+            Параметър за локално синьо отместване/червено отместване (peculiar velocity).
+            По подразбиране е 0.0.
             
         Връща:
         --------
@@ -92,12 +98,27 @@ class SupernovaeLikelihood:
             # Връщаме много лоша стойност, ако данните не са заредени
             return -np.inf
 
+        # Прилагаме корекцията за локално z
+        # z_theory = (1 + z_obs) / (1 + z_local) - 1
+        # Защита от деление на нула или невалидни стойности за z_local
+        if (1 + z_local) <= 0:
+            return -np.inf
+
+        z_theory = (1 + self.z) / (1 + z_local) - 1
+        
+        # Проверяваме за невалидни z_theory стойности (напр. отрицателни)
+        if np.any(z_theory < 0):
+            return -np.inf
+
         # Изчисляване на теоретичните стойности за модула на разстояние
         # Векторизираме извикването за по-добра производителност
-        mu_model = np.array([model.distance_modulus(z) for z in self.z])
+        mu_model_theory = np.array([model.distance_modulus(z) for z in z_theory])
+        
+        # Прилагаме отместването delta_M
+        mu_model_adjusted = mu_model_theory + delta_M
         
         # Вектор на разликите (residuals)
-        delta_mu = self.mu_obs - mu_model
+        delta_mu = self.mu_obs - mu_model_adjusted
         
         # Изчисляване на χ²
         # χ² = Δμ^T * C⁻¹ * Δμ

@@ -18,7 +18,7 @@ import sys
 # Добавяме директориите на проекта в пътя за търсене на модули
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../..')))
 
-from mcmc_analysis.models.plm_model import PLM
+from mcmc_analysis.models.plm_model_fp import PLM # Използваме новия модел PLM-FP
 from mcmc_analysis.models.lcdm_model import LCDM
 from mcmc_analysis.common_utils.cosmological_parameters import CMBData, PlanckCosmology, PhysicalConstants
 from scipy import integrate
@@ -69,39 +69,31 @@ class CMBLikelihood:
         """
         Изчислява звуковия хоризонт r_s до червено отместване z_star.
         """
-        # Използваме параметрите на модела
-        H0 = model_instance.H0
-        Omega_m = model_instance.Omega_m
-        
-        # Omega_r се приема за стандартна, тъй като е доминираща в ранна вселена
-        # Ω_r,0 * h² ≈ 2.47e-5
-        h = H0 / 100.0
-        Omega_r = (2.47e-5) / (h**2) # Стандартна стойност
+        # Използваме параметрите на модела в зависимост от типа му
+        if isinstance(model_instance, PLM):
+            H0 = model_instance.params['H0']
+            Omega_m = model_instance.Omega_m
+            h = H0 / 100.0
+            Omega_r = model_instance.Omega_r # PLM вече изчислява Omega_r
+        elif isinstance(model_instance, LCDM):
+            H0 = model_instance.H0
+            Omega_m = model_instance.Om0
+            h = H0 / 100.0
+            # LCDM също има Omega_r, но обикновено се извлича от Tcmb0
+            Omega_r = (2.47e-5) / (h**2) # Стандартна стойност
+        else:
+            raise ValueError("Неподдържан модел за изчисляване на r_s")
 
-        # Интегриране от z=голямо до z_star
-        # За r_s, интегрираме от много голямо z (или 0) до z_recombination.
-        # Тук интегрираме от z_star до безкрайност (или много голямо число)
-        # в обратна посока, което е еквивалентно на интегриране от 0 до z_star.
-        # scipy.integrate.quad интегрира от долна до горна граница.
-        # Реално, трябва да интегрираме от 0 до z_recombination.
-        # Моделите H_of_z и angular_diameter_distance вече имат имплементация.
-        # За r_s, ще използваме опростена форма:
-        
         # Адаптираме интегранда, за да използва H(z) от модела
         def integrand(z):
-            if isinstance(model_instance, PLM):
-                # PLM H_of_z връща физическия Хъбъл параметър
-                H_z = model_instance.H_of_z(z)
-            elif isinstance(model_instance, LCDM):
-                # LCDM H_of_z връща физическия Хъбъл параметър
-                H_z = model_instance.H_of_z(z)
-            else:
-                raise ValueError("Неподдържан модел за изчисляване на r_s")
+            H_z = model_instance.H_of_z(z)
             
             c_s = self.constants['c'] / np.sqrt(3) # km/s
             return c_s / H_z
         
-        r_s, _ = integrate.quad(integrand, 0, z_star, limit=100) # Интегрираме от z=0 до z_star
+        # ПРАВИЛНИЯТ ИНТЕГРАЛ: от z_recombination до безкрайност
+        # Увеличаваме и лимита за по-добра точност
+        r_s, _ = integrate.quad(integrand, z_star, np.inf, limit=200)
         
         return r_s
 
