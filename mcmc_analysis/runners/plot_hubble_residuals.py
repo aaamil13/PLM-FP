@@ -47,7 +47,7 @@ def main():
     logging.info("Стартиране на анализ на остатъци на Хъбъл диаграма...")
 
     # --- 1. Вземане на най-добрите параметри за PLM модела ---
-    plm_hdf5_file = os.path.join(os.path.dirname(__file__), '../results/PLM_z_local_optimized_checkpoint.h5')
+    plm_hdf5_file = os.path.join(os.path.dirname(__file__), '../results/PLM_CMB_constrained_optimized_checkpoint.h5')
     plm_best_params_7 = get_best_fit_from_mcmc(plm_hdf5_file, n_burnin=1000)
     
     if plm_best_params_7 is None:
@@ -59,7 +59,7 @@ def main():
     delta_M_plm = plm_best_params_7[-2]       # delta_M
     z_local_plm = plm_best_params_7[-1]       # z_local
     
-    # "Инжектираме" фиксираната стойност на k в модела
+    # "Инжектираме" фиксираната стойност на k
     FIXED_K_FOR_MODEL = 0.01 # Същата стойност като в run_mcmc.py
     
     # Създаваме пълния списък с параметри за PLM модела: H0, omega_m_h2, z_crit, w_crit, f_max, FIXED_K
@@ -118,14 +118,14 @@ def main():
     plt.axhline(0, color='grey', linestyle='--', linewidth=0.8, label='Zero Residuals')
     plt.xlabel('Redshift (z)')
     plt.ylabel('Distance Modulus Residuals (μ_data - μ_model - $\\Delta M$)')
-    plt.title('Hubble Diagram Residuals: PLM vs ΛCDM (SN Data) - $\\Delta M$ & $z_{local}$ adjusted')
+    plt.title('Hubble Diagram Residuals: PLM vs ΛCDM (SN Data) - $\\Delta M$ & $z_{local}$ adjusted (CMB Constrained)')
     plt.xscale('log')
     plt.grid(True, which="both", ls="--", c='0.7')
     plt.legend()
 
     results_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "../results"))
     os.makedirs(results_dir, exist_ok=True)
-    plot_path = os.path.join(results_dir, "hubble_residuals_plm_z_local.png")
+    plot_path = os.path.join(results_dir, "hubble_residuals_plm_CMB_constrained.png")
     
     plt.savefig(plot_path, dpi=300, bbox_inches='tight')
     plt.close()

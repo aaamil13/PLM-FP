@@ -62,7 +62,7 @@ The `PLM_z_local` model represents the culmination of this development. It is de
 ## Usage
 
 To run the MCMC simulation for the final PLM model:
-`python mcmc_analysis/runners/run_mcmc.py --model PLM`
+`python mcmc_analysis/runners/run_mcmc.py --model PLM --n_walkers 32 --n_steps 5000 --n_burnin 1000 --n_cores 12`
 
 After the simulation completes (generating `PLM_z_local_optimized_checkpoint.h5`), you can run the analysis scripts:
 
