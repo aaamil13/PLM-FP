@@ -1,4 +1,3 @@
-English Translation of the Global README.md
 Cascade Cosmology: A Dark Energy-Free Model Driven by Phase Transitions
 📜 Brief Description
 This project presents the development and testing of a novel cosmological model, dubbed PLM-FP (Phenomenological Linear Model with Phase Transitions). It offers an alternative framework for understanding the evolution of the universe without the need for dark energy or a cosmological constant (Λ). The core hypothesis is that the observed effects attributed to dark energy are a consequence of the dynamic nature of physical time, whose tempo evolves depending on the energy density of the medium.
