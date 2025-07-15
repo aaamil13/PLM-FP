@@ -70,11 +70,11 @@ def calculate_information_criteria(chi_squared, n_params, n_data_points):
 def main():
     """Основна функция за сравнение на моделите."""
     
-    # --- 1. Анализ на PLM модела (свободен H0, фиксирано k, свободен delta_M, свободен z_local) ---
-    logging.info("\n--- АНАЛИЗ НА PLM МОДЕЛ (свободен H0, фиксирано k, свободен delta_M, свободен z_local) ---")
+    # --- 1. Анализ на PLM модела (CMB-constrained) ---
+    logging.info("\n--- АНАЛИЗ НА PLM МОДЕЛ (CMB-constrained) ---")
     
     # ПРОМЕНЕТЕ ИМЕТО НА ФАЙЛА, ЗА ДА СОЧИ КЪМ РЕЗУЛТАТА ОТ НОВАТА СИМУЛАЦИЯ
-    plm_hdf5_file = os.path.join(os.path.dirname(__file__), '../results/PLM_z_local_optimized_checkpoint.h5')
+    plm_hdf5_file = os.path.join(os.path.dirname(__file__), '../results/PLM_CMB_constrained_optimized_checkpoint.h5')
     
     # ВАЖНО: Уверете се, че n_burnin съвпада с този от симулацията!
     plm_best_params_7 = get_best_fit_from_mcmc(plm_hdf5_file, n_burnin=1000)

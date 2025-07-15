@@ -49,6 +49,9 @@ bao_likelihood = None
 cmb_likelihood = None
 logger = None
 
+# Global CMBLikelihood instance (for use in priors)
+cmb_likelihood_instance = CMBLikelihood()
+
 # === Дефиниция на лог-вероятностни функции и priors ===
 
 def init_worker():
@@ -224,6 +227,86 @@ def log_probability_plm_final(params):
     return lp + log_like
 # --- End global definitions ---
 
+# --- Global definitions for PLM with CMB Angle Prior ---
+# Global CMBLikelihood instance for prior calculation
+# This needs to be outside main for pickling
+# Assuming cmb_likelihood_instance is already globally defined, as it is in predict_cmb_angle.py
+# If not, it needs to be defined here: cmb_likelihood_instance = CMBLikelihood()
+
+def log_prior_plm_cmb(params):
+    H0, omega_m_h2, z_crit, w_crit, f_max, delta_M, z_local = params
+    
+    # Standard boundaries
+    if not (40 < H0 < 80 and 
+            0.1 < omega_m_h2 < 0.3 and 
+            0.1 < z_crit < 10.0 and
+            0.01 < w_crit < 5.0 and 
+            0.1 < f_max < 0.99 and
+            -1.0 < delta_M < 1.0 and
+            -0.1 < z_local < 0.1):
+        return -np.inf
+    
+    # --- STRONG CMB CONSTRAINT ---
+    log_prior_val = 0.0
+    try:
+        # Create a temporary PLM model instance with cosmological parameters
+        cosmo_params = [H0, omega_m_h2, z_crit, w_crit, f_max, FIXED_K]
+        temp_model = PLM(*cosmo_params)
+        
+        # Calculate 100*theta_s using the global cmb_likelihood_instance
+        z_star = 1090.0
+        r_s_comoving = cmb_likelihood_instance.calculate_sound_horizon(temp_model, z_star)
+        D_A = temp_model.angular_diameter_distance(z_star)
+        
+        if not (np.isfinite(r_s_comoving) and np.isfinite(D_A) and D_A > 0):
+            return -np.inf
+        
+        r_s_physical = r_s_comoving / (1.0 + z_star)
+        theta_s_model = 100 * r_s_physical / D_A
+        
+        # Planck values
+        theta_planck = 1.04109
+        theta_error = 0.00030
+        
+        # Add Gaussian log-likelihood to the prior
+        log_prior_val += -0.5 * ((theta_s_model - theta_planck) / theta_error)**2
+        
+    except Exception:
+        return -np.inf # If calculation fails, reject the point
+    
+    return log_prior_val
+
+# New log_likelihood_plm that accepts 7 parameters and passes them correctly
+def log_likelihood_plm_7_params(params):
+    H0, omega_m_h2, z_crit, w_crit, f_max, delta_M, z_local = params
+    
+    # PLM class expects cosmological parameters
+    cosmo_params = [H0, omega_m_h2, z_crit, w_crit, f_max, FIXED_K]
+    
+    # Likelihood functions expect 'delta_M' and 'z_local'
+    try:
+        model = PLM(*cosmo_params)
+        
+        logL_sn = sn_likelihood.log_likelihood(model, delta_M=delta_M, z_local=z_local)
+        logL_bao = bao_likelihood.log_likelihood(model) # BAO is not affected by delta_M or z_local
+        # CMB likelihood is now part of the prior, so don't add it here.
+        
+        return logL_sn + logL_bao
+    except Exception:
+        return -np.inf
+
+# Final log_probability function
+def final_log_prob_with_cmb_prior(params):
+    log_prior_val = log_prior_plm_cmb(params)
+    if not np.isfinite(log_prior_val):
+        return -np.inf
+
+    log_like_val = log_likelihood_plm_7_params(params)
+    if not np.isfinite(log_like_val):
+        return -np.inf
+    
+    return log_prior_val + log_like_val
+
 def run_optimized_mcmc(model_name, log_prob_func, initial_params, n_walkers, n_steps, n_burnin, n_cores):
     """
     Оптимизиран MCMC runner с по-ефективно използване на CPU
@@ -381,26 +464,25 @@ def main():
 
     try:
         if args.model == "PLM":
-            # --- ФИНАЛЕН СЦЕНАРИЙ: H0 свободен, k фиксирано, delta_M свободен, z_local свободен ---
-            log_safe(logger, logging.INFO, "СТАРТИРАНЕ НА ФИНАЛНА СИМУЛАЦИЯ (свободен H0, фиксирано k, свободен delta_M, свободен z_local)")
+            # --- НОВ СЦЕНАРИЙ: Силно CMB Angle Prior ---
+            log_safe(logger, logging.INFO, "СТАРТИРАНЕ НА СИМУЛАЦИЯ СЪС СИЛЕН CMB ANGLE PRIOR")
 
-            # Параметри, които ще варираме (7 на брой):
-            # H0, omega_m_h2, z_crit, w_crit, f_max, delta_M, z_local
-            initial_params_final = [70.0, 0.14, 2.5, 0.5, 0.85, 0.0, -0.5] # delta_M около 0, z_local около -0.5
-            param_names_final = ["H0", "Omega_m h^2", "z_crit", "w_crit", "f_max", "delta_M", "z_local"]
+            # Свободните параметри са 7: H0, omega_m_h2, z_crit, w_crit, f_max, delta_M, z_local
+            initial_params_cmb = [55.0, 0.2, 3.0, 1.0, 0.5, 0.0, -0.04] 
+            param_names_cmb = ["H0", "Omega_m h^2", "z_crit", "w_crit", "f_max", "delta_M", "z_local"]
             
             # --- Стартиране на симулацията с новите настройки ---
             samples = run_optimized_mcmc(
-                "PLM_z_local", # Ново име за файловете
-                log_probability_plm_final, 
-                initial_params_final, 
+                "PLM_CMB_constrained", # Ново име
+                final_log_prob_with_cmb_prior,
+                initial_params_cmb, 
                 args.n_walkers, 
                 args.n_steps, 
                 args.n_burnin, 
                 n_cores
             )
             if samples is not None:
-                analyze_and_plot_results(samples, param_names_final, "PLM_z_local")
+                analyze_and_plot_results(samples, param_names_cmb, "PLM_CMB_constrained")
 
         elif args.model == "LCDM":
             initial_params = [67.36, 0.14, 0.022, 0.96, 2.1e-9, 0.054]
