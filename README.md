@@ -21,13 +21,17 @@ For a more detailed scientific narrative of the model's evolution and results, p
 🚀 Installation and Usage
 The project was developed and tested under Windows 11 with WSL2 (Ubuntu), using Python 3.11 (recommended) in a conda environment.
 1. Environment Setup
-Generated bash
+
 # 1. Clone the repository
-git clone https://github.com/your-username/your-repository-name.git
-cd your-repository-name
+
+git clone https://github.com/aaamil13/PLM-FP.git
+
+cd PLM-FP
 
 # 2. Create and activate a conda environment
+
 conda create -n cosmo_env python=3.11 -y
+
 conda activate cosmo_env
 
 # 3. Install core dependencies
@@ -45,7 +49,6 @@ Bash
 All scripts should be run from the project's root directory (Test_5/).
 A) Run the Final MCMC Simulation:
 This script runs the full MCMC analysis for the PLM model with its most successful configuration (with a CMB prior). Warning: This process is computationally intensive and may take hours or days. You can skip this step by using the provided .h5 results file.
-Generated bash
 
 # Runs the CMB-constrained simulation
 python mcmc_analysis/runners/run_mcmc.py --model PLM
@@ -53,7 +56,6 @@ Use code with caution.
 Bash
 B) Statistical Model Comparison (Most Important Result):
 This script uses the MCMC output (the PLM_CMB_constrained_optimized_checkpoint.h5 file) to quantitatively compare the PLM and ΛCDM models.
-Generated bash
 
 # Ensure compare_models.py is configured to read the correct .h5 file
 python mcmc_analysis/runners/compare_models.py
@@ -61,22 +63,25 @@ Use code with caution.
 Bash
 C) Generate Analysis Plots:
 These scripts use the MCMC results to generate key visualizations.
-Generated bash
+
 # Generate the Hubble diagram residuals plot
+
 python mcmc_analysis/runners/plot_hubble_residuals.py
 
 # Generate the plot for the local evolution of H₀
+
 python mcmc_analysis/runners/test_h0_evolution.py
 
 # Generate the CMB spectrum plot (requires CLASS)
 
 # First, generate the w(z) file
+
 python mcmc_analysis/runners/generate_effective_w.py
 
 # Then, run the script that calls CLASS and plots the result
+
 python mcmc_analysis/runners/run_class_and_plot.py
-Use code with caution.
-Bash
+
 
 # 🤝 Collaboration and Methodology
 This project is the result of an innovative collaboration between a human researcher and several AI models. The physical intuition, core hypotheses, and critical analysis were human-led, while the AI assistants facilitated rapid prototyping, code implementation, debugging, and the structuring of results. This workflow demonstrates the potential of AI-augmented science to accelerate the research cycle.
