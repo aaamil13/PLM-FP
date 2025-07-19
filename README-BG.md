@@ -28,8 +28,8 @@ Cosmic Microwave Background (CMB): Референтни стойности и с
 Generated bash
 
 # Клонирайте репозиторието
-git clone https://github.com/your-username/your-repository-name.git
-cd your-repository-name
+git clone https://github.com/aaamil13/PLM-FP.git
+cd PLM-FP
 
 # Създайте и активирайте conda среда
 conda create -n cosmo_env python=3.11 -y
