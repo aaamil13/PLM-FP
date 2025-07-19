@@ -23,11 +23,15 @@ The project was developed and tested under Windows 11 with WSL2 (Ubuntu), using 
 1. Environment Setup
 Generated bash
 # 1. Clone the repository
+
 git clone https://github.com/aaamil13/PLM-FP.git
+
 cd PLM-FP
 
 # 2. Create and activate a conda environment
+
 conda create -n cosmo_env python=3.11 -y
+
 conda activate cosmo_env
 
 # 3. Install core dependencies
