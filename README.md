@@ -66,20 +66,24 @@ Bash
 C) Generate Analysis Plots:
 These scripts use the MCMC results to generate key visualizations.
 Generated bash
+
 # Generate the Hubble diagram residuals plot
+
 python mcmc_analysis/runners/plot_hubble_residuals.py
 
 # Generate the plot for the local evolution of H₀
+
 python mcmc_analysis/runners/test_h0_evolution.py
 
 # Generate the CMB spectrum plot (requires CLASS)
 
 # First, generate the w(z) file
+
 python mcmc_analysis/runners/generate_effective_w.py
 
 # Then, run the script that calls CLASS and plots the result
+
 python mcmc_analysis/runners/run_class_and_plot.py
-Use code with caution.
 
 
 # 🤝 Collaboration and Methodology
