@@ -1,67 +1,103 @@
-"""
-Тестов скрипт за Supernovae Likelihood
-=======================================
-
-Този скрипт тества дали данните от свръхнови (Pantheon+) се зареждат
-правилно и дали χ² стойността се изчислява коректно за
-стандартен ΛCDM модел.
-"""
+# Файл: mcmc_analysis/runners/test_sn_likelihood.py (ДЕБЪГ ВЕРСИЯ)
 
 import numpy as np
 import sys
 import os
+import logging
 
-# Добавяме директориите на проекта в пътя за търсене на модули
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../..')))
+# --- DEBUGGING PATH ---
+current_dir = os.path.dirname(__file__)
+project_root = os.path.abspath(os.path.join(current_dir, '../..'))
 
+# Ensure the project root is in sys.path
+if project_root not in sys.path:
+    sys.path.insert(0, project_root)
+
+# --- NEW DEBUGGING PRINT ---
+print(f"sys.path before imports: {sys.path}")
+print(f"Project root being added: {project_root}")
+
+logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] - %(message)s")
+
+# Импортираме моделите и likelihood функциите
+from mcmc_analysis.models.lcdm_model import LCDM
 from mcmc_analysis.likelihoods.sn_likelihood import SupernovaeLikelihood
-from mcmc_analysis.models.plm_model import PLM # Използваме новия PLM модел
 
-def run_test():
-    """
-    Основна тестова функция.
-    """
-    print("=== Тестване на Supernovae Likelihood ===")
+def main():
+    logging.info("Starting SN Likelihood DEEP DEBUG test...")
+
+    # 1. Създайте инстанция на sn_likelihood
+    try:
+        sn_likelihood = SupernovaeLikelihood()
+        logging.info("SupernovaeLikelihood instance created successfully.")
+    except Exception as e:
+        logging.error(f"Error creating SupernovaeLikelihood instance: {e}")
+        return
+
+    # 2. Създайте инстанция на стандартен ΛCDM модел с параметрите от Planck
+    H0_planck = 67.4
+    Om0_planck = 0.315
+    omega_m_h2_planck = Om0_planck * (H0_planck / 100.0)**2
+    omega_b_h2_planck = 0.02238
     
     try:
-        # 1. Инициализация на Likelihood - това ще зареди данните
-        print("\n1. Зареждане на данни от свръхнови...")
-        sn_likelihood = SupernovaeLikelihood()
-        
-        # 2. Инициализация на модел (PLM с параметри по подразбиране)
-        print("\n2. Инициализация на PLM модел (стойности по подразбиране)...")
-        # Параметри: H0=70.0, omega_m_h2=0.14, z_crit=900.0, alpha=2.0, epsilon=0.0, beta=1.0
-        # Използваме параметри, които имитират стандартен модел, за да видим базово съвпадение.
-        # epsilon=0.0 и beta=1.0 правят δ(t) = 0, така че a(t) = k*t
-        plm_model = PLM(H0=70.0, omega_m_h2=0.14, z_crit=900.0, alpha=2.0, epsilon=0.0, beta=1.0)
-        print(f"   Модел: PLM(H0={plm_model.H0}, Om0={plm_model.Omega_m:.3f}, epsilon={plm_model.epsilon})")
-
-        # 3. Изчисляване на log(likelihood) и χ²
-        print("\n3. Изчисляване на χ²...")
-        log_like = sn_likelihood.log_likelihood(plm_model) # Използваме PLM модела
-        chi_squared = -2 * log_like
-        
-        num_points = len(sn_likelihood.z)
-        # Брой параметри в този опростен тест (H0, Om0) - 2
-        # В PLM ще имаме повече параметри за напасване (H0, Om0, z_crit, alpha, epsilon, beta)
-        # За този тест, приемаме, че напасваме само H0 и Om0 (т.е. 2)
-        dof = num_points - 2 
-        
-        print("\n--- РЕЗУЛТАТИ ---")
-        print(f"  Log(Likelihood): {log_like:.4f}")
-        print(f"  χ²: {chi_squared:.4f}")
-        print(f"  Брой точки с данни: {num_points}")
-        print(f"  dof: {dof}")
-        print(f"  χ²/dof: {chi_squared/dof:.4f}")
-        print("-----------------")
-        
-        if np.isfinite(chi_squared):
-            print("\nТЕСТЪТ Е УСПЕШЕН: χ² е валидно число.")
-        else:
-            print("\nТЕСТЪТ Е НЕУСПЕШЕН: χ² не е валидно число.")
-
+        lcdm_model = LCDM(H0=H0_planck, omega_m_h2=omega_m_h2_planck, omega_b_h2=omega_b_h2_planck)
+        logging.info(f"LCDM model instance created with H0={H0_planck}, omega_m_h2={omega_m_h2_planck:.5f}")
     except Exception as e:
-        print(f"\nГРЕШКА ПО ВРЕМЕ НА ТЕСТА: {e}")
+        logging.error(f"Error creating LCDM model instance: {e}")
+        return
+
+    # --- ДЕБЪГ: Проверка на входните данни ---
+    # Нека използваме директния път до файла за сигурност.
+    data_file_path = os.path.join(os.path.dirname(__file__), '../../mcmc_analysis/data/pantheon_plus_data.txt')
+    
+    # Проверете дали файлът съществува
+    if not os.path.exists(data_file_path):
+        logging.error(f"Data file not found: {data_file_path}")
+        return
+
+    # Колоните според официалното описание на Pantheon+:
+    # z_cmb (индекс 3), d_mb (индекс 5), MU_SH0ES (индекс 10)
+    # Зареждаме само тези колони, за да избегнем грешка с нечислови данни (напр. 'name')
+    data_full = np.loadtxt(data_file_path, skiprows=1, usecols=(3, 5, 10))
+    
+    z_cmb = data_full[:, 0]  # Първата заредена колона (индекс 3 от оригиналния файл)
+    d_mb = data_full[:, 1]   # Втората заредена колона (индекс 5 от оригиналния файл)
+    mu_shoes = data_full[:, 2] # Третата заредена колона (индекс 10 от оригиналния файл)
+
+    mu_model = np.array([lcdm_model.distance_modulus(z) for z in z_cmb])
+    
+    delta_mu = mu_shoes - mu_model
+    mu_obs_err = d_mb # Приемаме, че грешката в μ е същата като в m_b
+
+    # Уверете се, че няма нулеви грешки, за да избегнете деление на нула
+    mu_obs_err[mu_obs_err == 0] = np.finfo(float).eps # Малка стойност вместо 0
+
+    # --- Отпечатване на първите 5 стойности за проверка ---
+    print("\n--- DEBUGGING DATA (first 5 rows) ---")
+    print(f"{'z_cmb':<10} {'mu_obs':<10} {'mu_model':<10} {'delta_mu':<10} {'mu_err':<10}")
+    for i in range(5):
+        print(f"{z_cmb[i]:<10.4f} {mu_shoes[i]:<10.4f} {mu_model[i]:<10.4f} {delta_mu[i]:<10.4f} {mu_obs_err[i]:<10.4f}")
+    
+    # --- Изчисляване на χ² ---
+    chi2_simple = np.sum((delta_mu / mu_obs_err)**2)
+
+    print("\n--- RESULTS ---")
+    print(f"Simple Chi-squared (diagonal errors): {chi2_simple}")
+    if len(delta_mu) > 0 and mu_obs_err[0] != 0: # Avoid division by zero if array is empty or first error is zero
+        print(f"Value of first term in sum: {(delta_mu[0]/mu_obs_err[0])**2:.2f}")
+
+    if chi2_simple > 1e10:
+        print("\n[!!!] CRITICAL ERROR: Simple Chi-squared is astronomically large.")
+        problem_terms_indices = np.where((delta_mu / mu_obs_err)**2 > 1e10)[0]
+        if len(problem_terms_indices) > 0:
+            idx = problem_terms_indices[0]
+            print(f"The problem likely originates from terms like index {idx}:")
+            print(f"  delta_mu[{idx}] = {delta_mu[idx]}")
+            print(f"  mu_obs_err[{idx}] = {mu_obs_err[idx]}")
+            print(f"  (delta_mu / mu_err)^2 = {(delta_mu[idx]/mu_obs_err[idx])**2}")
+        else:
+            print("No single term found to be astronomically large, but the sum is.")
 
 if __name__ == "__main__":
-    run_test()
+    main()

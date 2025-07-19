@@ -18,7 +18,7 @@ class BAOLikelihood:
     """
     Клас за изчисляване на χ² за BAO данни с диагонална ковариация.
     """
-    def __init__(self, data_file='data/bao_data.txt'):
+    def __init__(self, data_file='mcmc_analysis/data/bao_data.txt'):
         """
         Инициализация и зареждане на BAO данните.
         

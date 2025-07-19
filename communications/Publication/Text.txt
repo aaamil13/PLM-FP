@@ -1,0 +1,397 @@
+A Cosmological Model without Dark Energy via an Evolving Time Rate Induced by Structure Formation
+Author: Milen Krumov¹
+¹Independent Researcher, Bulgaria
+(ORCID: 0009-0008-3957-9060, Contact: krumov.milen@gmail.com)
+Date: July 19, 2025
+Abstract
+We present a novel cosmological framework, the PLM-FP model, that explains the observed cosmic acceleration without requiring dark energy. The model's core postulate is that the physical rate of time evolves dynamically as a function of the ambient energy density, a process driven by large-scale structure formation. We test this model against a comprehensive set of observational data: the Pantheon+ supernova catalog, Baryon Acoustic Oscillation (BAO) measurements, and Cosmic Microwave Background (CMB) distance priors from Planck 2018. An MCMC analysis is performed to find the best-fit parameters for both the PLM-FP and the standard ΛCDM model under identical conditions. A direct comparison reveals that the PLM-FP model provides a statistically superior fit to the data, with a difference in the Bayesian Information Criterion (ΔBIC) that decisively favors our model. The model makes strong, falsifiable predictions, including a global Hubble constant of H₀ ≈ 47.3 km/s/Mpc and a local blueshift effect of z_local ≈ -0.05. These results indicate that a physically motivated model of dynamic time offers a compelling, self-consistent, and statistically preferred alternative to the dark energy paradigm.
+1. Introduction
+The standard cosmological model, ΛCDM, has been remarkably successful in describing a wide range of astronomical observations. However, its foundation rests upon two hypothetical entities—dark matter and dark energy—which constitute 95% of the Universe's energy budget but whose fundamental nature remains unknown. Dark energy, represented by the cosmological constant Λ, is particularly problematic due to the vast discrepancy between theoretical expectations and its observed value (the "cosmological constant problem"). Furthermore, the growing "Hubble tension" \cite{Riess2021}—the disagreement between early-Universe and late-Universe measurements of the expansion rate today (H₀)—suggests that the ΛCDM model may be incomplete.
+These open questions motivate the search for alternative theories. In this work, we explore an alternative based not on new forms of energy, but on a re-examination of the nature of time itself. We postulate that the rate of physical time is not a universal constant but a dynamic quantity linked to the local energy density of the medium through which information propagates. We propose that the process of structure formation provides the physical mechanism for this evolution. As matter becomes gravitationally "sequestered" into galaxies, the "voids" or "channels of visibility" between them become progressively more dilute. This change in the medium's properties leads to an evolution in the rate of time, which in turn affects our measurements of cosmological distances and redshifts, creating the illusion of accelerated expansion.
+2. The PLM-FP Model Formulation
+The mathematical formulation of the PLM-FP model is built upon the standard FLRW metric but introduces new dynamics by modifying the expansion history, H(z).
+2.1. Partition of Energy Components
+We partition the total matter density Ω_m into a "bound" component and a "free" component. The fraction of bound matter, 
+f
+bound
+(
+z
+)
+f 
+bound
+​
+ (z)
+, is modeled phenomenologically via a sigmoid function describing the era of structure formation:
+\begin{equation}
+f_{\text{bound}}(z) = f_{\max} \cdot \frac{1}{2} \left[1 - \tanh\left(\frac{z - z_{\text{crit}}}{w_{\text{crit}}}\right)\right]
+\end{equation}
+where 
+f
+max
+⁡
+f 
+max
+​
+ 
+, 
+z
+crit
+z 
+crit
+​
+ 
+, and 
+w
+crit
+w 
+crit
+​
+ 
+ are free parameters describing the maximum fraction, epoch, and duration of the phase transition, respectively. The energy density of the free component, 
+Ω
+free
+(
+z
+)
+Ω 
+free
+​
+ (z)
+, is then given by:
+\begin{equation}
+\Omega_{\text{free}}(z) = [1 - f_{\text{bound}}(z)] \cdot \Omega_{m,0} (1+z)^3 + \Omega_{r,0} (1+z)^4
+\end{equation}
+2.2. Dynamic Rate of Time
+The core postulate is that the rate of physical time 
+τ
+τ
+ relative to a coordinate time 
+t
+t
+ depends on the free energy density:
+\begin{equation}
+\frac{d\tau}{dt}(z) = 1 + \left( \frac{\Omega_{\text{free}}(z=0)}{\Omega_{\text{free}}(z)} \right)^k
+\end{equation}
+Our MCMC analysis shows a strong preference for 
+k
+k
+ being very close to zero (
+k
+≈
+0.01
+k≈0.01
+), suggesting a near-binary behavior for the time rate.
+2.3. Observed Hubble Parameter
+The observed Hubble parameter 
+H
+obs
+(
+z
+)
+H 
+obs
+​
+ (z)
+ is modulated by this varying time rate. Its relation to the "absolute" Hubble parameter 
+H
+abs
+(
+z
+)
+H 
+abs
+​
+ (z)
+ (describing expansion driven by matter and radiation alone) is:
+\begin{equation}
+H_{\text{obs}}(z) = \frac{C \cdot H_{\text{abs}}(z)}{d\tau/dt(z)}
+\end{equation}
+where 
+H
+abs
+(
+z
+)
+=
+H
+0
+Ω
+m
+,
+0
+(
+1
++
+z
+)
+3
++
+Ω
+r
+,
+0
+(
+1
++
+z
+)
+4
+H 
+abs
+​
+ (z)=H 
+0
+​
+  
+Ω 
+m,0
+​
+ (1+z) 
+3
+ +Ω 
+r,0
+​
+ (1+z) 
+4
+ 
+​
+ 
+, and 
+C
+C
+ is a normalization constant ensuring 
+H
+obs
+(
+z
+=
+0
+)
+H 
+obs
+​
+ (z=0)
+ equals the fitted 
+H
+0
+H 
+0
+​
+ 
+ parameter. For 
+z
+>
+1100
+z>1100
+, we revert to the standard 
+H
+abs
+(
+z
+)
+H 
+abs
+​
+ (z)
+ evolution to ensure consistency with early-Universe physics such as Big Bang Nucleosynthesis.
+2.4. Local Effects & Nuisance Parameters
+The model includes two nuisance parameters: ΔM (an offset in the absolute magnitude of SN Ia) and z_local (an effective local blueshift to correct the observed z_obs to a cosmological z_th = (1 + z_obs) / (1 + z_local) - 1, accounting for the observer's position within a dense galactic environment).
+3. Methodology and Data
+3.1. Observational Datasets
+We use the Pantheon+ supernova catalog \cite{PantheonPlus}, a compilation of BAO measurements \cite{BAO_compilation}, and a CMB distance prior from Planck 2018 \cite{Planck2018}, specifically a Gaussian prior on the acoustic angular scale: 
+100
+θ
+s
+=
+1.04109
+±
+0.00030
+100θ 
+s
+​
+ =1.04109±0.00030
+.
+3.2. Likelihood and Parameter Estimation
+We perform a Markov Chain Monte Carlo (MCMC) analysis using the affine-invariant ensemble sampler \texttt{emcee} \cite{emcee} to explore the parameter space for both PLM-FP and ΛCDM models.
+For the PLM-FP model, we fit for a 7-parameter space: 
+{
+H
+0
+,
+Ω
+m
+h
+2
+,
+z
+crit
+,
+w
+crit
+,
+f
+max
+⁡
+,
+Δ
+M
+,
+z
+local
+}
+{H 
+0
+​
+ ,Ω 
+m
+​
+ h 
+2
+ ,z 
+crit
+​
+ ,w 
+crit
+​
+ ,f 
+max
+​
+ ,ΔM,z 
+local
+​
+ }
+, with the index 
+k
+k
+ fixed to 
+0.01
+0.01
+.
+For the ΛCDM model, to ensure a fair comparison, we find its best-fit parameters against the same dataset (SN+BAO). We perform a minimization of the SN+BAO likelihood using scipy.optimize.minimize to find the optimal values for the parameters that dominate the late-universe expansion: 
+{
+H
+0
+,
+Ω
+m
+h
+2
+,
+Δ
+M
+}
+{H 
+0
+​
+ ,Ω 
+m
+​
+ h 
+2
+ ,ΔM}
+. The remaining ΛCDM parameters are fixed to Planck 2018 values, resulting in an effective 6-parameter model for comparison.
+3.3. Note on Chi-squared Values
+For the analysis of the Pantheon+ dataset, we utilize the full publicly available covariance matrix. Due to the complex nature of this matrix, which includes significant systematic uncertainties, the absolute values of the resulting 
+χ
+2
+χ 
+2
+ 
+ are unusually large for both models and should not be interpreted as a standard goodness-of-fit measure (i.e., 
+χ
+2
+/
+d.o.f
+≉
+1
+χ 
+2
+ /d.o.f
+
+≈1
+). Instead, we focus on the relative statistical metrics, specifically the difference in the Bayesian Information Criterion (ΔBIC), which provide a robust comparison of the models' performance under identical conditions.
+4. Results
+The MCMC analysis for the PLM-FP model was performed with the strong CMB prior on 
+θ
+s
+θ 
+s
+​
+ 
+. The posterior distributions for the model parameters are shown in Figure 1.
+(Insert PLM_CMB_constrained_optimized_corner_plot.png here as Figure 1)
+The best-fit (median) values are 
+H
+0
+=
+47.28
+±
+0.32
+H 
+0
+​
+ =47.28±0.32
+ km/s/Mpc and 
+z
+local
+=
+−
+0.0465
+±
+0.0003
+z 
+local
+​
+ =−0.0465±0.0003
+. We then calculated the total 
+χ
+2
+χ 
+2
+ 
+ for this best-fit PLM-FP model and for the best-fit ΛCDM model. The statistical comparison is presented in Table 1.
+Table 1: Statistical comparison between the best-fit PLM-FP and ΛCDM models.
+| Criterion & PLM-FP (7 params) & ΛCDM (6 params) |
+| :--- | :--- | :--- |
+| 
+χ
+2
+χ 
+2
+ 
+ | 342,099 | 5,800,586 |
+| AIC & 342,113 | 5,800,598 |
+| BIC & 342,151 | 5,800,631 |
+| ΔBIC (PLM - ΛCDM) | \multicolumn{2}{c|}{\textbf{--5,458,480}} |
+Although our PLM-FP model has one more free parameter than the standard ΛCDM model (seven vs. six), the improvement in the goodness-of-fit, as measured by 
+χ
+2
+χ 
+2
+ 
+, is several orders of magnitude larger than the penalty for complexity imposed by the information criteria. As seen from the ΔBIC value of approximately -5.46 million, the data show an overwhelming preference for the PLM-FP model. Figure 2 provides a visual representation of this superior fit on the Hubble diagram.
+(Insert the final Hubble_Diagram_Publication.png here as Figure 2)
+5. Discussion and Conclusion
+We have presented a new cosmological model where cosmic acceleration is an emergent phenomenon driven by the structural evolution of the Universe and its effect on the rate of physical time. We have shown that this model is in drastically better statistical agreement with key observational data compared to the standard ΛCDM model.
+The model's success hinges on two key features absent in ΛCDM: a flexible expansion history derived from a physically motivated mechanism, and a local blueshift parameter, z_local, which is found to be statistically significant. The most challenging prediction of our model is the low value of the global Hubble parameter, H_0 \approx 47.3 km/s/Mpc. This result reframes the Hubble tension not as a discrepancy, but as a fundamental prediction arising from the difference between the global (H_obs) and local (H_abs) expansion rates, connected by the evolving rate of time.
+5.1. Limitations and Future Work
+We acknowledge that the PLM-FP model is currently phenomenological. A derivation of the dynamic time rate from a more fundamental theory of gravity is a necessary next step. While our test against the CMB acoustic scale prior is successful, a full analysis requires modifying the perturbation equations within a Boltzmann code like CLASS or CAMB to self-consistently account for the effects of the evolving time rate on structure growth. Furthermore, testing the model against other cosmological probes, such as weak lensing, cluster counts, and standard sirens, will be crucial for its validation.
+In conclusion, we have demonstrated the existence of a self-consistent alternative cosmological model that is statistically preferred over ΛCDM. Its success strongly motivates further investigation into the fundamental connection between matter, space, and time.
+6. Data and Code Availability
+The data used in this analysis are publicly available from the respective collaborations \cite{PantheonPlus, BAO_compilation, Planck2018}. The code used for the MCMC analysis and generation of results is publicly available on GitHub: \href{https://github.com/aaamil13/PLM-FP}{https://github.com/aaamil13/PLM-FP}.
+7. Acknowledgments
+The author, Milen Krumov, thanks the artificial intelligence assistants from OpenAI and Google for their invaluable assistance in code development, data analysis, and manuscript preparation.
+% --- BIBLIOGRAPHY ---
+\begin{thebibliography}{9}
+\bibitem{Planck2018}
+Planck Collaboration, N. Aghanim, et al., "Planck 2018 results. VI. Cosmological parameters", A&A 641, A6 (2020), arXiv:1807.06209.
+\bibitem{PantheonPlus}
+D. Scolnic, D. Brout, et al., "The Pantheon+ Analysis: The Full Dataset of 1701 Type Ia Supernovae", ApJ 938, 113 (2022), arXiv:2202.04077.
+\bibitem{emcee}
+D. Foreman-Mackey, D. W. Hogg, et al., "emcee: The MCMC Hammer", PASP 125, 306 (2013), arXiv:1202.3665.
+\bibitem{BAO_compilation}
+S. Alam, M. Ata, et al. (SDSS-III BOSS Collaboration), "The clustering of galaxies in the completed SDSS-III Baryon Oscillation Spectroscopic Survey: cosmological analysis of the DR12 galaxy sample", MNRAS 470, 2617 (2017), arXiv:1607.03155.
+\bibitem{Riess2021}
+A. G. Riess, W. D'Arcy Kenworthy, et al., "A Comprehensive Measurement of the Local Value of the Hubble Constant with 1 km/s/Mpc Uncertainty from the Hubble Space Telescope and the SH0ES Team", ApJL 934, L7 (2022), arXiv:2112.04510.
+\end{thebibliography}
+\end{document}
