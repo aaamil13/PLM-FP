@@ -80,7 +80,7 @@ python mcmc_analysis/runners/generate_effective_w.py
 # Then, run the script that calls CLASS and plots the result
 python mcmc_analysis/runners/run_class_and_plot.py
 Use code with caution.
-Bash
+
 
 # 🤝 Collaboration and Methodology
 This project is the result of an innovative collaboration between a human researcher and several AI models. The physical intuition, core hypotheses, and critical analysis were human-led, while the AI assistants facilitated rapid prototyping, code implementation, debugging, and the structuring of results. This workflow demonstrates the potential of AI-augmented science to accelerate the research cycle.
