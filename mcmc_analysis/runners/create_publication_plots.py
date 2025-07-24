@@ -18,7 +18,7 @@ from mcmc_analysis.likelihoods.sn_likelihood import SupernovaeLikelihood
 logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] - %(message)s")
 
 # --- Настройки за publication-ready plots ---
-rcParams['font.size'] = 14
+rcParams['font.size'] = 16
 rcParams['font.family'] = 'serif'
 rcParams['font.serif'] = ['Times New Roman']
 rcParams['axes.linewidth'] = 1.2
@@ -61,37 +61,37 @@ def main():
     # --- 2. Генериране на Фигура 1: Физика на PLM модела ---
     logging.info("Генериране на Фигура 1: Физика на модела...")
     fig1, ((ax1, ax2), (ax3, ax4)) = plt.subplots(2, 2, figsize=(12, 10))
-    fig1.suptitle('Физически компоненти на PLM-FP модела', fontsize=16, y=0.95)
+    fig1.suptitle('Physical Components of the PLM-FP Model', fontsize=18, y=0.95)
 
     z_range_wide = np.logspace(-3, 3, 500)
     
     # Plot 1: H(z) evolution
     h_plm = np.array([plm_model.H_of_z(z) for z in z_range_wide])
     h_lcdm = np.array([lcdm_model.H_of_z(z) for z in z_range_wide])
-    ax1.plot(z_range_wide, h_plm, color='royalblue', linewidth=2.5, label='PLM Модел')
-    ax1.plot(z_range_wide, h_lcdm, color='green', linestyle='--', linewidth=2.5, label='ΛCDM Модел')
-    ax1.set_xlabel('Червено отместване (z)')
+    ax1.plot(z_range_wide, h_plm, color='royalblue', linewidth=2.5, label='PLM Model')
+    ax1.plot(z_range_wide, h_lcdm, color='green', linestyle='--', linewidth=2.5, label='ΛCDM Model')
+    ax1.set_xlabel('Redshift (z)')
     ax1.set_ylabel('H(z) [km s⁻¹ Mpc⁻¹]')
-    ax1.set_title('Еволюция на Хъбъл параметъра')
+    ax1.set_title('Hubble Parameter Evolution')
     ax1.legend()
     ax1.grid(True, alpha=0.5)
     ax1.set_xscale('log')
 
-    # Plot 2: Темпо на времето dτ/dt
+    # Plot 2: Time Dilation dτ/dt
     dtau_dt = np.array([plm_model._time_dilation(z) for z in z_range_wide])
     ax2.plot(z_range_wide, dtau_dt, color='red', linewidth=2.5)
-    ax2.set_xlabel('Червено отместване (z)')
+    ax2.set_xlabel('Redshift (z)')
     ax2.set_ylabel('dτ/dt')
-    ax2.set_title('Еволюция на темпото на времето')
+    ax2.set_title('Time Dilation Evolution')
     ax2.grid(True, alpha=0.5)
     ax2.set_xscale('log')
 
     # Plot 3: Bound fraction evolution
     f_bound = np.array([plm_model._f_bound(z) for z in z_range_wide])
     ax3.plot(z_range_wide, f_bound, color='purple', linewidth=2.5)
-    ax3.set_xlabel('Червено отместване (z)')
-    ax3.set_ylabel('Фракция свързана материя f_bound(z)')
-    ax3.set_title('Еволюция на структурообразуването')
+    ax3.set_xlabel('Redshift (z)')
+    ax3.set_ylabel('Bound Matter Fraction f_bound(z)')
+    ax3.set_title('Structure Formation Evolution')
     ax3.grid(True, alpha=0.5)
     ax3.set_xscale('log')
 
@@ -106,9 +106,9 @@ def main():
     w_eff = -1.0 - (1.0 / 3.0) * d_log_rho_d_log_a
     ax4.plot(z_range_wide, w_eff, color='darkorange', linewidth=2.5)
     ax4.axhline(y=-1, color='black', linestyle='--', alpha=0.5, label='ΛCDM (w=-1)')
-    ax4.set_xlabel('Червено отместване (z)')
+    ax4.set_xlabel('Redshift (z)')
     ax4.set_ylabel('w_eff(z)')
-    ax4.set_title('Ефективно уравнение на състоянието')
+    ax4.set_title('Effective Equation of State')
     ax4.legend()
     ax4.grid(True, alpha=0.5)
     ax4.set_xscale('log')
@@ -118,11 +118,11 @@ def main():
     plot_path1 = os.path.join(results_dir, "figure1_model_physics.png")
     plt.savefig(plot_path1, dpi=300)
     plt.close()
-    logging.info(f"Фигура 1 (физика на модела) е запазена в: {plot_path1}")
+    logging.info(f"Figure 1 (model physics) saved to: {plot_path1}")
 
 
-    # --- 3. Генериране на Фигура 2: Hubble Диаграма и Остатъци ---
-    logging.info("Генериране на Фигура 2: Hubble Диаграма...")
+    # --- 3. Generate Figure 2: Hubble Diagram and Residuals ---
+    logging.info("Generating Figure 2: Hubble Diagram...")
     fig2, (ax1, ax2) = plt.subplots(2, 1, figsize=(10, 10), sharex=True,
                                    gridspec_kw={'height_ratios': [3, 1], 'hspace': 0.05})
 
@@ -142,9 +142,9 @@ def main():
     ax1.plot(z_grid, mu_lcdm, color='crimson', linestyle='--', linewidth=2.5, 
              label='ΛCDM Model (Planck 2018)', zorder=2)
     
-    ax1.set_ylabel('Distance Modulus $\\mu$', fontsize=14)
-    ax1.set_title('Hubble Diagram: PLM-FP vs. $\\Lambda$CDM', fontsize=16)
-    ax1.legend(loc='lower right', fontsize=12)
+    ax1.set_ylabel('Distance Modulus $\\mu$', fontsize=16)
+    ax1.set_title('Hubble Diagram: PLM-FP vs. $\\Lambda$CDM', fontsize=18)
+    ax1.legend(loc='lower right', fontsize=14)
     ax1.grid(True, which="both", ls=":", alpha=0.6)
     ax1.set_xscale('log')
     ax1.tick_params(labelbottom=False)
@@ -153,7 +153,7 @@ def main():
                f'$\\Lambda$CDM: $\\chi^2 = 7,814,451$\n'
                f'$\\Delta$BIC = -7,138,146') # Hardcoded values from previous analysis
     props = dict(boxstyle='round', facecolor='white', alpha=0.8, edgecolor='gray')
-    ax1.text(0.03, 0.97, textstr, transform=ax1.transAxes, fontsize=11,
+    ax1.text(0.03, 0.97, textstr, transform=ax1.transAxes, fontsize=13,
              verticalalignment='top', bbox=props)
 
     # Долна част - Остатъци
@@ -173,17 +173,17 @@ def main():
     ax2.set_xscale('log')
     ax2.set_xlim(0.01, 3) # По-добър зуум за SN данни
     ax2.set_ylim(-1, 1) # Зуумваме около нулата
-    ax2.set_xlabel('Redshift $z$', fontsize=14)
-    ax2.set_ylabel('Residuals $\\Delta\\mu$', fontsize=14)
+    ax2.set_xlabel('Redshift $z$', fontsize=16)
+    ax2.set_ylabel('Residuals $\\Delta\\mu$', fontsize=16)
     ax2.grid(True, which="both", ls=":", alpha=0.6)
-    ax2.legend(loc='lower right', fontsize=12) # Add legend for residuals
+    ax2.legend(loc='lower right', fontsize=14) # Add legend for residuals
 
     plt.tight_layout(rect=[0, 0, 1, 0.97])
     results_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "../results"))
     plot_path2 = os.path.join(results_dir, "Hubble_Diagram_Publication.png")
     plt.savefig(plot_path2, dpi=300)
     plt.close()
-    logging.info(f"Фигура 2 (Hubble диаграма) е запазена в: {plot_path2}")
+    logging.info(f"Figure 2 (Hubble diagram) saved to: {plot_path2}")
 
 if __name__ == "__main__":
     main()

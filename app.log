@@ -462,3 +462,26 @@ TypeError: log_likelihood_plm() got an unexpected keyword argument 'delta_M'
 2025-07-16 17:30:38 [INFO] -     z_local = -0.0467 +0.0003 / -0.0003
 2025-07-16 17:30:38 [INFO] - 
 Оптимизираните MCMC симулации завършиха успешно!
+2025-07-24 10:39:31 [INFO] - ============================================================
+2025-07-24 10:39:31 [INFO] - OPTIMIZED MCMC RUNNER
+2025-07-24 10:39:31 [INFO] - ============================================================
+2025-07-24 10:39:31 [INFO] - Model: PLM
+2025-07-24 10:39:31 [INFO] - Walkers: 32, Steps: 5000, Burnin: 1000
+2025-07-24 10:39:31 [INFO] - CPU Cores: 22/24
+2025-07-24 10:39:31 [INFO] - System: 12 physical, 24 logical
+2025-07-24 10:39:31 [INFO] - Plot-only mode enabled. Attempting to load samples from checkpoint.
+2025-07-24 10:39:31 [INFO] - Successfully loaded 8512 samples from D:\MyPRJ\Python\NotLinearTime\Test_5\mcmc_analysis\results\PLM_CMB_constrained_optimized_checkpoint.h5
+2025-07-24 10:39:31 [INFO] - 
+Analysis results for PLM_CMB_constrained:
+2025-07-24 10:39:31 [INFO] -   Number of samples: 8512
+2025-07-24 10:39:33 [INFO] -   Corner plot: D:\MyPRJ\Python\NotLinearTime\Test_5\mcmc_analysis\results\PLM_CMB_constrained_optimized_corner_plot.png
+2025-07-24 10:39:33 [INFO] -   Results:
+2025-07-24 10:39:33 [INFO] -     H0 = 47.2775 +0.3203 / -0.3152
+2025-07-24 10:39:33 [INFO] -     Omega_m h^2 = 0.2027 +0.0020 / -0.0009
+2025-07-24 10:39:33 [INFO] -     z_crit = 4.8984 +3.5189 / -4.0903
+2025-07-24 10:39:33 [INFO] -     w_crit = 2.4391 +1.8143 / -2.0547
+2025-07-24 10:39:33 [INFO] -     f_max = 0.5303 +0.3246 / -0.2948
+2025-07-24 10:39:33 [INFO] -     delta_M = 0.9994 +0.0004 / -0.0011
+2025-07-24 10:39:33 [INFO] -     z_local = -0.0465 +0.0003 / -0.0003
+2025-07-24 10:39:33 [INFO] - 
+Plot generation completed successfully!
