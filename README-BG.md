@@ -8,7 +8,7 @@
 
 Основните научни резултати, методология и теоретичен фон са представени в статията, която е налична в директорията **/communications** и на Figshare:
 
-*   **Преглед на статията:** [**communications/PLM-FP_Paper.pdf**](https://github.com/aaamil13/PLM-FP/blob/main/communications/PLM-FP_Paper.pdf)
+*   **Преглед на статията:** [**communications/FigShare/Out/PLM_FP_Figshare.pdf**](https://github.com/aaamil13/PLM-FP/blob/main/communications/FigShare/Out/PLM_FP_Figshare.pdf)
 *   **Публикувана версия (Figshare):** [https://figshare.com/articles/thesis/A_Cosmological_Model...](https://figshare.com/articles/thesis/A_Cosmological_Model_without_Dark_Energy_via_an_Evolving_Time_Rate_Induced_by_Structure_Formation/29634143)
 
 ---
