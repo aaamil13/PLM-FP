@@ -8,7 +8,7 @@ This repository contains the full source code, MCMC analysis, and results for th
 
 The main scientific results, methodology, and theoretical background are presented in the paper, which is available in the **/communications** directory and on Figshare:
 
-*   **View Paper:** [**communications/PLM-FP_Paper.pdf**](https://github.com/aaamil13/PLM-FP/blob/main/communications/FigShare/Out/PLM_FP_Figshare.pdf)
+*   **View Paper:** [**communications/FigShare/Out/PLM_FP_Figshare.pdf**](https://github.com/aaamil13/PLM-FP/blob/main/communications/FigShare/Out/PLM_FP_Figshare.pdf)
 *   **Published Version (Figshare):** [https://figshare.com/articles/thesis/A_Cosmological_Model...](https://figshare.com/articles/thesis/A_Cosmological_Model_without_Dark_Energy_via_an_Evolving_Time_Rate_Induced_by_Structure_Formation/29634143)
 
 ---
