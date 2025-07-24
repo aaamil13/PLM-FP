@@ -47,11 +47,11 @@ The model's superior fit and key physical components are illustrated in the figu
 
 *   **/communications**: Contains the final scientific paper.
 *   **/mcmc_analysis**: The main source code for the project.
-  *   **/models**: Python implementation of the PLM-FP and ΛCDM models.
-  *   **/likelihoods**: Likelihood functions for SN, BAO, and CMB data.
-  *   **/runners**: Main scripts for executing simulations and generating plots.
-  *   **/results**: **Output directory for all MCMC chains (.h5), plots (.png), and data files.**
-  *   **/data**: Observational data files.
+*  *   **/models**: Python implementation of the PLM-FP and ΛCDM models.
+*  *   **/likelihoods**: Likelihood functions for SN, BAO, and CMB data.
+*  *   **/runners**: Main scripts for executing simulations and generating plots.
+*  *   **/results**: **Output directory for all MCMC chains (.h5), plots (.png), and data files.**
+*  *   **/data**: Observational data files.
 
 ### How to Reproduce the Results
 
